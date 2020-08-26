@@ -14,26 +14,50 @@ if(isset($_GET['rid']) && $_GET['rid']!=""){
 	$room_id = 0;
 }
 $guest_id = 0;
+$guests_otp = '1234';
 
 $sqlM = "SELECT gci_id FROM guest_check_in WHERE gci_room_id ='".$room_id."' AND gci_location_id='".$location_id."'  AND gci_room_stage='checkin' ";
 $resultM = mysqli_query($conn, $sqlM);
  
 if (mysqli_num_rows($resultM) > 0) {
 	while($rowM = mysqli_fetch_assoc($resultM)) {
-		$sqlMS = "SELECT guests_id FROM guests WHERE guests_guest_checkin_id ='".$rowM['gci_id']."'";
+		$sqlMS = "SELECT guests_id, guests_otp   FROM guests WHERE guests_guest_checkin_id ='".$rowM['gci_id']."'";
 		$resultMS = mysqli_query($conn, $sqlMS);
 		
 		while($rowMS = mysqli_fetch_assoc($resultMS)) {
 			if(isset($rowMS['guests_id']) && $rowMS['guests_id']!=""){
 				$guest_id = $rowMS['guests_id'];
+				$guests_otp = $rowMS['guests_otp'];
 			}else{
 				$guest_id = 0;
+				$guests_otp = '1234';
 			}
 		}
 	}	
 }else{
 //header('Location: contact_us.php?lid='.$location_id.'&rid='.$room_id.'');
-}		
+}	
+$location_name = "";
+$location_logo = "";
+$location_image = "";
+$sqlM = "SELECT * FROM locations WHERE id='".$location_id."'";
+$resultM = mysqli_query($conn, $sqlM);
+
+if (mysqli_num_rows($resultM) > 0) {
+	while($rowM = mysqli_fetch_assoc($resultM)) {
+
+		if(isset($rowM['location_name']) && $rowM['location_name']!=""){
+			$location_name = $rowM['location_name'];
+		}
+		if(isset($rowM['location_logo']) && $rowM['location_logo']!=""){
+			$location_logo = 'http://risolvehm.digisoftbiz.ae/'.$rowM['location_logo'];
+		}
+		if(isset($rowM['location_image']) && $rowM['location_image']!=""){
+			$location_image = $rowM['location_image'];
+		}
+	}	
+}
+	
 ?>
 <html>
 <head>
