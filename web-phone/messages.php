@@ -108,7 +108,7 @@ body{ font-family: "Times New Roman", Times, serif;}
 
 <?php 
 	$form_data = array(
-		"guest_id" => $guest_id,
+		"guest_id" => '289',
 		"location_id" => $location_id,
 		"room_id" => $room_id
 	);	
